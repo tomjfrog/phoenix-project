@@ -1,8 +1,8 @@
 
-name: 'JFrog CI Integration'
+name: 'Build and Scan Dependencies'
 on: [push]
 jobs:
- jfrog-ci-integration:
+ build-and-scan-dependencies:
    runs-on: ubuntu-latest
    env:
      JF_ENV_1: ${{ secrets.JF_ENV_1 }}
@@ -21,9 +21,15 @@ jobs:
        run: |
          # Configure the project
          MVN_PATH=`which mvn` && export M2_HOME=`readlink -f $MVN_PATH | xargs dirname | xargs dirname`
-          jfrog rt mvn-config --server-id-resolve jfrog-instance --repo-resolve-releases phoenix-maven-dev-virtual --repo-resolve-snapshots phoenix-maven-dev-virtual
+          jf mvn-config \
+         --server-id-resolve jfrog-instance \
+         --repo-resolve-releases phoenix-maven-dev-virtual \
+         --repo-resolve-snapshots phoenix-maven-dev-virtual
          # Build the project using JFrog CLI
-         jfrog rt mvn clean install
+         jf mvn clean install \
+          --build-name=${{ github.repository }} \
+          --build-number=${{ github.run_number }}
+
      - name: Failure check
        run: |
          echo "JFROG_BUILD_STATUS=FAIL" >> $GITHUB_ENV
@@ -31,11 +37,11 @@ jobs:
      - name: Publish build
        run: |
          # Collect and store environment variables in the build-info
-         jfrog rt bce
+         jf rt bce ${{ github.repository }} ${{ github.run_number }}
          # Collect and store VCS details in the build-info
-         jfrog rt bag
+         jf rt bag ${{ github.repository }} ${{ github.run_number }}
          # Publish the build-info to Artifactory
-         jfrog rt bp
+         jf rt bp ${{ github.repository }} ${{ github.run_number }}
          # Scan the published build-info with Xray
-         jfrog rt bs
+         jf rt bs ${{ github.repository }} ${{ github.run_number }}
        if: always()
