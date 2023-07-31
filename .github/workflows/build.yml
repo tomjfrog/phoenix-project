@@ -29,6 +29,9 @@ jobs:
          jf mvn clean install \
           --build-name=${{ github.repository }} \
           --build-number=${{ github.run_number }}
+     - name: Audit Dependencies
+       run: |
+         jf audit --mvn
 
      - name: Failure check
        run: |
@@ -43,5 +46,5 @@ jobs:
          # Publish the build-info to Artifactory
          jf rt bp ${{ github.repository }} ${{ github.run_number }}
          # Scan the published build-info with Xray
-         jf rt bs ${{ github.repository }} ${{ github.run_number }}
+         jf bs ${{ github.repository }} ${{ github.run_number }}
        if: always()
