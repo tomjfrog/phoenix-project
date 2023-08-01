@@ -1,5 +1,5 @@
 name: 'Scan Dependencies'
-run-name: {{ github.ref_name}}-{{ github.sha }}
+run-name: {{ github.ref_name}}
 on:
   push:
    branches: [!main]
