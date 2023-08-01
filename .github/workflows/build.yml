@@ -1,9 +1,8 @@
 name: 'Scan Dependencies'
-run-name: {{ github.ref_name}}-{{ github.sha7 }}
+run-name: {{ github.ref_name}}-{{ github.sha }}
 on:
-  [push]
-branches-ignore:
-  - main
+  push:
+   branches: [!main]
 jobs:
  scan-dependencies:
    runs-on: ubuntu-latest
@@ -20,34 +19,3 @@ jobs:
        with:
          java-version: '17'
          distribution: 'temurin'
-#     - name: Build
-#       run: |
-#         # Configure the project
-#         MVN_PATH=`which mvn` && export M2_HOME=`readlink -f $MVN_PATH | xargs dirname | xargs dirname`
-#          jf mvn-config \
-#         --server-id-resolve jfrog-instance \
-#         --repo-resolve-releases phoenix-maven-dev-virtual \
-#         --repo-resolve-snapshots phoenix-maven-dev-virtual
-#         # Build the project using JFrog CLI
-#         jf mvn clean install \
-#          --build-name=${{ github.repository }} \
-#          --build-number=${{ github.run_number }}
-     - name: Audit Dependencies
-       run: |
-         jf audit --mvn
-
-#     - name: Failure check
-#       run: |
-#         echo "JFROG_BUILD_STATUS=FAIL" >> $GITHUB_ENV
-#       if: failure()
-#     - name: Publish build
-#       run: |
-#         # Collect and store environment variables in the build-info
-#         jf rt bce ${{ github.repository }} ${{ github.run_number }}
-#         # Collect and store VCS details in the build-info
-#         jf rt bag ${{ github.repository }} ${{ github.run_number }}
-#         # Publish the build-info to Artifactory
-#         jf rt bp ${{ github.repository }} ${{ github.run_number }}
-#         # Scan the published build-info with Xray
-#         jf bs ${{ github.repository }} ${{ github.run_number }}
-#       if: always()
