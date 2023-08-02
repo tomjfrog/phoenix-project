@@ -50,6 +50,9 @@ jobs:
           jf rt bag ${{ github.repository }} ${{ github.run_number }}
           # Publish the build-info to Artifactory
           jf rt bp ${{ github.repository }} ${{ github.run_number }}
-          # Scan the published build-info with Xray
-          jf bs ${{ github.repository }} ${{ github.run_number }}
+        if: always()
+      - name: Scan Build
+        run: |
+          # Scan the build-info
+          jf rt bs ${{ github.repository }} ${{ github.run_number }}
         if: always()
