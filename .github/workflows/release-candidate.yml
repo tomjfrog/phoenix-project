@@ -1,0 +1,37 @@
+name: Create Release Bundle and Promote
+
+on:
+  push:
+    tags:
+      - '*-rc-[0-9]*' # Regex pattern to match tags suffixed with '-rc-' followed by a number
+jobs:
+  promote-and-create-release-candidate:
+    runs-on: ubuntu-latest
+    env:
+      JF_ENV_1: ${{ secrets.JF_ENV_1 }}
+      JFROG_BUILD_STATUS: PASS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Store Commit ID of Tagged Code
+        id: tag_commit_sha
+        run: |
+          echo "commit_sha=$(git rev-list -n 1 ${{ github.ref }})" >> $GITHUB_OUTPUT
+      - name: Print Tag Name
+        run: |
+          echo "Tag: ${{ github.ref }}"
+      - name: Print Commit ID
+        run: |
+          echo "Commit ID: ${{ steps.tag_commit_sha.outputs.commit_sha }}"
+#      - name: Create Release Bundle
+#        run: |
+#          # Create a release bundle from the build-info
+#          jf rt rb ${{ github.repository }} ${{ github.run_number }} ${{ github.run_number }}-rb
+
