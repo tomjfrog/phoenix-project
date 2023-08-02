@@ -19,3 +19,6 @@ jobs:
        with:
          java-version: '17'
          distribution: 'temurin'
+     - name: Audit Dependencies
+       run: |
+         jf audit --mvn
