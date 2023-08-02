@@ -1,5 +1,5 @@
 name: 'Scan Dependencies'
-run-name: ${{ github.ref_name}}
+run-name: Scan Dependencies
 on:
   push:
    branches: [!main]
