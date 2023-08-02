@@ -54,5 +54,5 @@ jobs:
       - name: Scan Build
         run: |
           # Scan the build-info
-          jf rt bs ${{ github.repository }} ${{ github.run_number }}
+          jf bs ${{ github.repository }} ${{ github.run_number }}
         if: always()
