@@ -51,6 +51,9 @@ jobs:
           # Publish the build-info to Artifactory
           jf rt bp ${{ github.repository }} ${{ github.run_number }}
         if: always()
+      - name: Set GITHUB_SHA on Artifacts
+        run: |
+          jf rt sp --build-name ${{ github.repository }} --build-number ${{ github.run_number }} git_sha=${{ github.sha }}
       - name: Scan Build
         run: |
           # Scan the build-info
