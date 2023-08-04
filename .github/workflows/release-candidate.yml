@@ -35,4 +35,4 @@ jobs:
           echo "Commit ID: ${{ steps.tag_commit_sha.outputs.commit_sha }}"
       - name: Set Git tag on Artifacts
         run: |
-          jf rt sp --build ${{ github.repository }}/${{ github.run_number }} git_ref_name=${{ github.ref_name }}
+          jf rt sp --props git_sha=${{ steps.tag_commit_sha.outputs.commit_sha }} git_ref_name=${{ github.ref_name }}
