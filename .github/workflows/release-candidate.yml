@@ -24,14 +24,15 @@ jobs:
         id: tag_commit_sha
         run: |
           echo "commit_sha=$(git rev-list -n 1 ${{ github.ref }})" >> $GITHUB_OUTPUT
-      - name: Print Tag Name
+      - name: Print Full Ref (tag)
         run: |
           echo "Tag: ${{ github.ref }}"
+      - name: Print Ref (tag) Name
+        run: |
+          echo "Tag: ${{ github.ref_name }}"
       - name: Print Commit ID
         run: |
           echo "Commit ID: ${{ steps.tag_commit_sha.outputs.commit_sha }}"
-#      - name: Create Release Bundle
-#        run: |
-#          # Create a release bundle from the build-info
-#          jf rt rb ${{ github.repository }} ${{ github.run_number }} ${{ github.run_number }}-rb
-
+      - name: Set Git tag on Artifacts
+        run: |
+          jf rt sp --build ${{ github.repository }}/${{ github.run_number }} git_ref_name=${{ github.ref_name }}
