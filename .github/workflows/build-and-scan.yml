@@ -3,6 +3,8 @@ on:
   push:
     branches:
       [main]
+    paths-ignore:
+      - .github/**
 jobs:
   build-and-scan-dependencies:
     runs-on: ubuntu-latest

@@ -33,6 +33,22 @@ jobs:
       - name: Print Commit ID
         run: |
           echo "Commit ID: ${{ steps.tag_commit_sha.outputs.commit_sha }}"
-      - name: Set Git tag on Artifacts
+      - name: Find the Build in Artifactory that contains the Commit ID of the Tagged Code
+        id: build_info
         run: |
-          jf rt sp phoenix-maven-dev-virtual --props git_sha=${{ steps.tag_commit_sha.outputs.commit_sha }} git_ref_name=${{ github.ref_name }}
+          I have no idea how to do this
+      - name: Set JSON for Build Spec
+        id: build_spec
+        run: |
+          echo '{
+                 "builds": [
+                   {
+                     "name": "build name",
+                     "number": "build number",
+                     "project": "project"
+                   }
+                 ]
+               }'>> $GITHUB_ENV
+      - name: Create Release Bundle
+        run: |
+          jf release-bundle-create --builds --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}

@@ -3,6 +3,8 @@ run-name: Scan Dependencies
 on:
   push:
    branches-ignore: [main]
+   paths-ignore:
+     - .github/**
 jobs:
  scan-dependencies:
    runs-on: ubuntu-latest
