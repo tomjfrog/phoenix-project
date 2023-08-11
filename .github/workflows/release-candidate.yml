@@ -39,7 +39,7 @@ jobs:
           COMMIT_SHA: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}
         run: |
           {
-          echo SPEC<<EOF
+          echo 'SPEC<<EOF'
           builds.find({
            "@buildInfo.env.GITHUB_SHA": ${{ steps.commit_sha.outputs.COMMIT_SHA }}
           }).include("name", "number")
