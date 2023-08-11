@@ -38,13 +38,11 @@ jobs:
         env:
           COMMIT_SHA: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}
         run: |
-          {
           echo 'SPEC<<EOF'
           builds.find({
            "@buildInfo.env.GITHUB_SHA": ${{ steps.commit_sha.outputs.COMMIT_SHA }}
           }).include("name", "number")
-          echo EOF
-          } >> $GITHUB_ENV
+          echo EOF >> $GITHUB_ENV
       - name: Execute Build Query
         id: build_query_result
         run: |
