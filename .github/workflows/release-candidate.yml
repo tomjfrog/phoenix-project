@@ -35,12 +35,14 @@ jobs:
           echo "Commit ID: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}"
       - name: Create Build Query Spec
         id: create_build_query_spec
+        env:
+          COMMIT_SHA: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}
         run: |
           {
           echo SPEC<<EOF
           builds.find({
-                 "@buildInfo.env.GITHUB_SHA\": ${{ steps.commit_sha.outputs.COMMIT_SHA }}
-                }).include("name", "number")
+           "@buildInfo.env.GITHUB_SHA": ${{ steps.commit_sha.outputs.COMMIT_SHA }}
+          }).include("name", "number")
           echo EOF
           } >> $GITHUB_ENV
       - name: Execute Build Query
