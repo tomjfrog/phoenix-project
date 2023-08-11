@@ -36,9 +36,9 @@ jobs:
       - name: Create Build Query Spec
         id: create_build_query_spec
         run: |
-          echo SPEC="builds.find({
+          echo SPEC='builds.find({
                  "@buildInfo.env.GITHUB_SHA": ${{ steps.commit_sha.outputs.COMMIT_SHA }}
-                }).include("name", "number")">> $GITHUB_ENV
+                }).include("name", "number")'>> $GITHUB_ENV
       - name: Execute Build Query
         id: build_query_result
         run: |
