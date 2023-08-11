@@ -23,7 +23,7 @@ jobs:
       - name: Store Commit ID of Tagged Code
         id: tag_commit_sha
         run: |
-          echo "commit_sha=$(git rev-list -n 1 ${{ github.ref }})" >> $GITHUB_OUTPUT
+          echo "COMMIT_SHA=$(git rev-list -n 1 ${{ github.ref }})" >> $GITHUB_OUTPUT
       - name: Print Full Ref (tag)
         run: |
           echo "Tag: ${{ github.ref }}"
@@ -32,23 +32,51 @@ jobs:
           echo "Tag: ${{ github.ref_name }}"
       - name: Print Commit ID
         run: |
-          echo "Commit ID: ${{ steps.tag_commit_sha.outputs.commit_sha }}"
-      - name: Find the Build in Artifactory that contains the Commit ID of the Tagged Code
-        id: build_info
+          echo "Commit ID: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}"
+      - name: Create Build Query Spec
+        id: create_build_query_spec
         run: |
-          I have no idea how to do this
-      - name: Set JSON for Build Spec
-        id: build_spec
+          echo SPEC="builds.find({
+                 "@buildInfo.env.GITHUB_SHA": ${{ steps.commit_sha.outputs.COMMIT_SHA }}
+                }).include("name", "number")">> $GITHUB_ENV
+      - name: Execute Build Query
+        id: build_query_result
         run: |
-          echo '{
+          {
+            echo 'QUERY_RESULT<<EOF'
+            jf s --spec ${{ steps.create_build_query_spec.outputs.SPEC }}
+            echo EOF
+          } >> $GITHUB_ENV
+      - name: Store Build Name and Number
+        id: store_build_name_and_number
+        env:
+          QUERY_RESULT: ${{ steps.build_query_result.outputs.QUERY_RESULT }}
+        run: |
+          echo "BUILD_NAME=$(echo "QUERY_RESULT" | jq -r '.results[0]."build.name"')" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$(echo "QUERY_RESULT" | jq -r '.results[0]."build.number"')" >> $GITHUB_ENV
+          echo "Build Name: $BUILD_NAME"
+          echo "Build Number: $BUILD_NUMBER"
+      - name: Create Build Spec for Release Bundle
+        id: release_bundle_build_spec
+        env:
+          BUILD_NAME: ${{ steps.store_build_name_and_number.outputs.BUILD_NAME }}
+          BUILD_NUMBER: ${{ steps.store_build_name_and_number.outputs.BUILD_NUMBER }}
+        run: |
+          echo SPEC='{
                  "builds": [
                    {
-                     "name": "build name",
-                     "number": "build number",
-                     "project": "project"
+                     "name": "$BUILD_NAME",
+                     "number": "$BUILD_NUMBER"
                    }
                  ]
                }'>> $GITHUB_ENV
       - name: Create Release Bundle
+        id: create_release_bundle
+        env:
+            SPEC: ${{ steps.release_bundle_build_spec.outputs.SPEC }}
         run: |
-          jf release-bundle-create --builds --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
+          {
+            echo 'RELEASE_BUNDLE<<EOF'
+            jf release-bundle-create --builds $SPEC --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
+            echo EOF
+          } >> $GITHUB_ENV
