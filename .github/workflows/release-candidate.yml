@@ -41,12 +41,13 @@ jobs:
         id: build_query_result
         env:
           COMMIT_SHA: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
         run: |
           curl --request POST \
             --url https://tomjfrog.jfrog.io/artifactory/api/search/aql \
-            --header 'Authorization: Bearer foo' \
+            --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
             --header 'Content-Type: text/plain' \
-            --data "builds.find({	\"@buildInfo.env.GITHUB_SHA\":\"$COMMIT_SHA\"
+            --data "builds.find({\"@buildInfo.env.GITHUB_SHA\":\"$COMMIT_SHA\"
           }).include(\"name\", \"number\")"
       - name: Store Build Name and Number
         id: store_build_name_and_number
