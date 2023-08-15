@@ -52,7 +52,7 @@ jobs:
               \"name\": \"$BUILD_NAME\"
            })        
           .include(\"name\", \"number\", \"created\")
-          .sort({\"$desc\": [\"created\"]})
+          .sort({\"\$desc\": [\"created\"]})
           .limit(1)"
       - name: Store Build Name and Number
         id: store_build_name_and_number
