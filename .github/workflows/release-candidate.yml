@@ -42,13 +42,18 @@ jobs:
         env:
           COMMIT_SHA: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+          BUILD_NAME: ${{ github.repository }}
         run: |
           curl --request POST \
-            --url https://tomjfrog.jfrog.io/artifactory/api/search/aql \
-            --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
-            --header 'Content-Type: text/plain' \
-            --data "builds.find({\"@buildInfo.env.GITHUB_SHA\":\"$COMMIT_SHA\"
-          }).include(\"name\", \"number\")"
+          --url https://tomjfrog.jfrog.io/artifactory/api/search/aql \
+          --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
+          --header 'Content-Type: text/plain' \
+          --data "builds.find({
+              \"name\": $BUILD_NAME
+           })        
+          .include(\"name\", \"number\", \"created\")
+          .sort({\"$desc\": [\"created\"]})
+          .limit(1)"
       - name: Store Build Name and Number
         id: store_build_name_and_number
         env:
