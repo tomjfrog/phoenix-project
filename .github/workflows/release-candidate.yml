@@ -44,6 +44,8 @@ jobs:
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
           BUILD_NAME: ${{ github.repository }}
         run: |
+          {
+          echo 'QUERY_RESULT<<EOF'
           curl --request POST \
           --url https://tomjfrog.jfrog.io/artifactory/api/search/aql \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
@@ -53,7 +55,8 @@ jobs:
            })        
           .include(\"name\", \"number\", \"created\")
           .sort({\"\$desc\": [\"created\"]})
-          .limit(1)" >> $GITHUB_OUTPUT
+          .limit(1)"
+          } >> $GITHUB_OUTPUT
       - name: Store Build Name and Number
         id: store_build_name_and_number
         env:
