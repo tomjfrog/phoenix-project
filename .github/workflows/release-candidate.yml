@@ -59,8 +59,8 @@ jobs:
         env:
           QUERY_RESULT: ${{ steps.build_query_result.outputs.QUERY_RESULT }}
         run: |
-          echo "BUILD_NAME=$(echo "QUERY_RESULT" | jq -r '.results[0]."build.name"')" >> $GITHUB_ENV
-          echo "BUILD_NUMBER=$(echo "QUERY_RESULT" | jq -r '.results[0]."build.number"')" >> $GITHUB_ENV
+          echo "BUILD_NAME=$(echo $QUERY_RESULT | jq -r '.results[0]."build.name"')" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$(echo $QUERY_RESULT | jq -r '.results[0]."build.number"')" >> $GITHUB_ENV
           echo "Build Name: $BUILD_NAME"
           echo "Build Number: $BUILD_NUMBER"
       - name: Create Build Spec for Release Bundle
