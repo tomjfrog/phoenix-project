@@ -53,7 +53,7 @@ jobs:
            })        
           .include(\"name\", \"number\", \"created\")
           .sort({\"\$desc\": [\"created\"]})
-          .limit(1)"
+          .limit(1)" >> $GITHUB_OUTPUT
       - name: Store Build Name and Number
         id: store_build_name_and_number
         env:
