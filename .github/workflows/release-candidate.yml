@@ -20,6 +20,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+      - name: test curl
+        run: |
+          which curl
+          curl --version
       - name: Store Commit ID of Tagged Code
         id: tag_commit_sha
         run: |
@@ -33,22 +37,17 @@ jobs:
       - name: Print Commit ID
         run: |
           echo "Commit ID: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}"
-      - name: Create Build Query Spec
-        id: create_build_query_spec
+      - name: Execute Build Query
+        id: build_query_result
         env:
           COMMIT_SHA: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}
         run: |
-          echo "SPEC=builds.find({" >> $GITHUB_ENV
-          echo "  \"@buildInfo.env.GITHUB_SHA\": \"${{ steps.commit_sha.outputs.COMMIT_SHA }}\"" >> $GITHUB_ENV
-          echo '}).include("name", "number")' >> $GITHUB_ENV
-      - name: Execute Build Query
-        id: build_query_result
-        run: |
-          {
-            echo 'QUERY_RESULT<<EOF'
-            jf s --spec ${{ steps.create_build_query_spec.outputs.SPEC }}
-            echo EOF
-          } >> $GITHUB_ENV
+          curl --request POST \
+            --url https://tomjfrog.jfrog.io/artifactory/api/search/aql \
+            --header 'Authorization: Bearer foo' \
+            --header 'Content-Type: text/plain' \
+            --data "builds.find({	\"@buildInfo.env.GITHUB_SHA\":\"$COMMIT_SHA\"
+          }).include(\"name\", \"number\")"
       - name: Store Build Name and Number
         id: store_build_name_and_number
         env:
