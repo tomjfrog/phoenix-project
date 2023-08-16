@@ -73,16 +73,14 @@ jobs:
           BUILD_NAME: ${{ steps.store_build_name_and_number.outputs.BUILD_NAME }}
           BUILD_NUMBER: ${{ steps.store_build_name_and_number.outputs.BUILD_NUMBER }}
         run: |
-          SPEC = '''
-            {
-              "builds": [
-                {
-                  "name": "${BUILD_NAME}",
-                  "number": "${BUILD_NUMBER}"
-                }
-              ]
-            }
-          '''
+          SPEC='{
+            "builds": [
+              {
+                "name": "'${BUILD_NAME}'",
+                "number": "'${BUILD_NUMBER}'"
+              }
+            ]
+          }'
           echo "SPEC=$SPEC" >> $GITHUB_OUTPUT
       - name: Create Release Bundle
         id: create_release_bundle
