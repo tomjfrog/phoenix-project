@@ -74,10 +74,10 @@ jobs:
           BUILD_NUMBER: ${{ steps.store_build_name_and_number.outputs.BUILD_NUMBER }}
         run: |
           echo 'SPEC<<EOF'
-           "builds": [
+           \"builds\": [
              {
-               "name": "$BUILD_NAME",
-               "number": "$BUILD_NUMBER"
+               \"name\": "$BUILD_NAME",
+               \"number\": "$BUILD_NUMBER"
              }
            ]
           echo EOF >> $GITHUB_OUTPUT
