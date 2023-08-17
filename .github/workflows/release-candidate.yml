@@ -75,14 +75,14 @@ jobs:
         run: |
           {
           echo 'SPEC<<EOF'
-            {
+            $(cat {
               "builds": [
                 {
                   "name": $BUILD_NAME,
                   "number": $BUILD_NUMBER
                 }
               ]
-            }
+            })
           echo EOF
           } >> $GITHUB_OUTPUT
       - name: Create Release Bundle
