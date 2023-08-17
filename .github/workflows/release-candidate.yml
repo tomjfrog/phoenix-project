@@ -77,10 +77,10 @@ jobs:
             echo 'SPEC<<EOF'
             $(cat
               {
-                "builds": [
+                \"builds\": [
                   {
-                    "name": $BUILD_NAME,
-                    "number": $BUILD_NUMBER
+                    \"name\": $BUILD_NAME,
+                    \"number\": $BUILD_NUMBER
                   }
                 ]
               })
