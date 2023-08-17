@@ -22,27 +22,31 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: test curl
+      - name: Tooling Check
         run: |
-          which curl
-          curl --version
-      - name: test jf
-        run: |
-          which jf
-          jf --version
+          echo 'curl version:' $(curl --version)
+          echo 'jf version:' $(jf --version)
+      # Just seeing what sort of metadata I can fish for...
       - name: Store Commit ID of Tagged Code
         id: tag_commit_sha
         run: |
           echo "COMMIT_SHA=$(git rev-list -n 1 ${{ github.ref }})" >> $GITHUB_OUTPUT
+      # Just seeing what sort of metadata I can fish for...
       - name: Print Full Ref (tag)
         run: |
           echo "Tag: ${{ github.ref }}"
+      # Just seeing what sort of metadata I can fish for...
       - name: Print Ref (tag) Name
         run: |
           echo "Tag: ${{ github.ref_name }}"
+      # Just seeing what sort of metadata I can fish for...
       - name: Print Commit ID
         run: |
           echo "Commit ID: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}"
+      # This is a little "dumb" in that we're simply finding the latest build for the given build name.
+      # I wanted to find the build the build-info.env.GITHUB_SHA for last build, the way I was doing it was getting
+      # the GIT ref of the last push to `main` which was grabbing changes on the Github Actions spec files.
+      # I'm sure there's a better way to do this, but this is what I came up with.
       - name: Execute Build Query
         id: build_query_result
         env:
@@ -64,6 +68,7 @@ jobs:
           .limit(1)"
           echo EOF
           } >> $GITHUB_OUTPUT
+      # I will need these values in subsequent steps to create an RB from a build
       - name: Store Build Name and Number
         id: store_build_name_and_number
         env:
@@ -73,6 +78,7 @@ jobs:
           echo "BUILD_NUMBER=$(echo $QUERY_RESULT | jq -r '.results[0]."build.number"')" >> $GITHUB_OUTPUT
           echo "Build Name: $BUILD_NAME"
           echo "Build Number: $BUILD_NUMBER"
+        # This was hard.  Multiline strings in GH Actions is not very easy
       - name: Create Build Spec for Release Bundle
         id: release_bundle_build_spec
         env:
@@ -91,6 +97,7 @@ jobs:
                   }"
              echo EOF
           } >> $GITHUB_OUTPUT
+      # RBv2 CLI requires an actual JSON file, not a JSON-formatted string, as a parameter.  Annoying, but ok
       - name: Write to File
         id: create-temp-file
         env:
@@ -98,15 +105,13 @@ jobs:
         run: |
           # Create a temporary file
           TEMP_FILE=$(mktemp)
-          
           # Write content to the temporary file
           echo $SPEC > $TEMP_FILE
-          
           # Display the path of the temporary file
           echo "Temporary file path: $TEMP_FILE"
-          
           # Set the path as an output for other steps to use
           echo "::set-output name=temp-file-path::$TEMP_FILE"
+      # Let's Go! Also, one has to be mindful of `jf ds rbc` (v1) vs `jf rbc` (v2)
       - name: Create Release Bundle
         id: create_release_bundle
         env:
