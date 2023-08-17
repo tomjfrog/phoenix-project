@@ -117,4 +117,8 @@ jobs:
         env:
             TEMP_FILE_PATH: ${{ steps.create-temp-file.outputs.temp-file-path }}
         run: |
-            jf release-bundle-create --builds $TEMP_FILE_PATH --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} phoneix-project-release-bundle ${{ github.ref_name }}
+            jf release-bundle-create --builds $TEMP_FILE_PATH --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} phoenix-project-release-bundle ${{ github.ref_name }}
+      - name: Promote Release Bundle to QA
+        id: promote_release_bundle_to_qa
+        run: |
+          jf rbp --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} phoenix-project-release-bundle ${{ github.ref_name }} QA
