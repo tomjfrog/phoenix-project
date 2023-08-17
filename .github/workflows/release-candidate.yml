@@ -104,16 +104,10 @@ jobs:
       - name: Create Release Bundle
         id: create_release_bundle
         env:
-            SPEC: ${{ steps.release_bundle_build_spec.outputs.SPEC }}
             TEMP_FILE_PATH: ${{ steps.create-temp-file.outputs.temp-file-path }}
         run: |
-          # Get the temporary file path from the output of the previous step
-          
-        
-          # Display the content of the temporary file
-          cat "$TEMP_FILE_PATH"
           {
             echo 'RELEASE_BUNDLE<<EOF'
-            jf ds release-bundle-create --builds $TEMP_FILE_PATH --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
+            jf ds release-bundle-create --spec $TEMP_FILE_PATH --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
             echo EOF
           } >> $GITHUB_ENV
