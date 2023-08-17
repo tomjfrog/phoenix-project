@@ -78,8 +78,8 @@ jobs:
             echo "{
                     \"builds\": [
                       {
-                        \"name\": $BUILD_NAME,
-                        \"number\": $BUILD_NUMBER
+                        \"name\": \"$BUILD_NAME\",
+                        \"number\": \"$BUILD_NUMBER\"
                       }
                     ]
                   }"
