@@ -108,6 +108,6 @@ jobs:
         run: |
           {
             echo 'RELEASE_BUNDLE<<EOF'
-            jf ds release-bundle-create --spec $TEMP_FILE_PATH --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
+            jf ds release-bundle-create --spec $TEMP_FILE_PATH Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
             echo EOF
           } >> $GITHUB_ENV
