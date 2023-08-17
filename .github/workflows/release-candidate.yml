@@ -90,18 +90,17 @@ jobs:
         env:
           SPEC: ${{ steps.release_bundle_build_spec.outputs.SPEC }}
         run: |
-          echo $SPEC > spec.json
+          mkdir -p /temp
+          echo $SPEC > /temp/spec.json
+      - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          path: spec.json
+          name: spec file
+          path: /temp/spec.json
       - name: Create Release Bundle
         id: create_release_bundle
         env:
             SPEC: ${{ steps.release_bundle_build_spec.outputs.SPEC }}
-        uses: actions/download-artifact@v3
-        with:
-          name: spec.json
-          path: .
         run: |
           {
             echo 'RELEASE_BUNDLE<<EOF'
