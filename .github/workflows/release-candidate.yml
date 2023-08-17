@@ -75,14 +75,14 @@ jobs:
         run: |
           {
             echo 'SPEC<<EOF'
-            echo "{
+            echo '{
                     \"builds\": [
                       {
                         \"name\": $BUILD_NAME,
                         \"number\": $BUILD_NUMBER
                       }
                     ]
-                  }"
+                  }'
              echo EOF
           } >> spec.json
           echo "SPEC=$(cat spec.json)" >> $GITHUB_OUTPUT
