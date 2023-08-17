@@ -87,6 +87,9 @@ jobs:
           } >> $GITHUB_OUTPUT
       - name: Write to File
         id: write_to_file
+        uses: actions/upload-artifact@v3
+        with:
+          path: spec.json
         env:
           SPEC: ${{ steps.release_bundle_build_spec.outputs.SPEC }}
         run: |
@@ -95,9 +98,13 @@ jobs:
         id: create_release_bundle
         env:
             SPEC: ${{ steps.release_bundle_build_spec.outputs.SPEC }}
+        uses: actions/download-artifact@v3
+        with:
+          name: spec.json
+          path: .
         run: |
           {
             echo 'RELEASE_BUNDLE<<EOF'
-            jf ds release-bundle-create --builds spec.json --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
+            jf ds release-bundle-create --builds ./spec.json --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
             echo EOF
           } >> $GITHUB_ENV
