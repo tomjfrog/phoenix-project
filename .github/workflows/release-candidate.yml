@@ -84,7 +84,8 @@ jobs:
                     ]
                   }"
              echo EOF
-          } >> $GITHUB_OUTPUT
+          } >> spec.json
+          echo "SPEC=$(cat spec.json)" >> $GITHUB_OUTPUT
       - name: Create Release Bundle
         id: create_release_bundle
         env:
@@ -92,6 +93,6 @@ jobs:
         run: |
           {
             echo 'RELEASE_BUNDLE<<EOF'
-            jf ds release-bundle-create --builds $SPEC --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
+            jf ds release-bundle-create --builds spec.json --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
             echo EOF
           } >> $GITHUB_ENV
