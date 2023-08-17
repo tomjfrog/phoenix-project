@@ -87,13 +87,13 @@ jobs:
           } >> $GITHUB_OUTPUT
       - name: Write to File
         id: write_to_file
-        uses: actions/upload-artifact@v3
-        with:
-          path: spec.json
         env:
           SPEC: ${{ steps.release_bundle_build_spec.outputs.SPEC }}
         run: |
           echo $SPEC > spec.json
+        uses: actions/upload-artifact@v3
+        with:
+          path: spec.json
       - name: Create Release Bundle
         id: create_release_bundle
         env:
