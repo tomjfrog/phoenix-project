@@ -106,8 +106,5 @@ jobs:
         env:
             TEMP_FILE_PATH: ${{ steps.create-temp-file.outputs.temp-file-path }}
         run: |
-          {
-            echo 'RELEASE_BUNDLE<<EOF'
+            cat $TEMP_FILE_PATH
             jf ds release-bundle-create --spec $TEMP_FILE_PATH Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
-            echo EOF
-          } >> $GITHUB_ENV
