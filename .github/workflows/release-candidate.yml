@@ -82,7 +82,8 @@ jobs:
                   "number": $BUILD_NUMBER
                 }
               ]
-            }EOF)
+            })
+          EOF
           } >> $GITHUB_OUTPUT
       - name: Create Release Bundle
         id: create_release_bundle
