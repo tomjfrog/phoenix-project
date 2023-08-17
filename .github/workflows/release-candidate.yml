@@ -112,4 +112,4 @@ jobs:
         env:
             TEMP_FILE_PATH: ${{ steps.create-temp-file.outputs.temp-file-path }}
         run: |
-            jf release-bundle-create --builds $TEMP_FILE_PATH --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
+            jf release-bundle-create --builds $TEMP_FILE_PATH --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} ${{ github.repository }}-release-bundle ${{ github.ref_name }}
