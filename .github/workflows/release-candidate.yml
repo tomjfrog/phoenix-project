@@ -86,24 +86,34 @@ jobs:
              echo EOF
           } >> $GITHUB_OUTPUT
       - name: Write to File
-        id: write_to_file
+        id: create-temp-file
         env:
           SPEC: ${{ steps.release_bundle_build_spec.outputs.SPEC }}
         run: |
-          mkdir -p /temp
-          echo $SPEC > /temp/spec.json
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: spec file
-          path: /temp/spec.json
+          # Create a temporary file
+          TEMP_FILE=$(mktemp)
+          
+          # Write content to the temporary file
+          echo $SPEC > $TEMP_FILE
+          
+          # Display the path of the temporary file
+          echo "Temporary file path: $TEMP_FILE"
+          
+          # Set the path as an output for other steps to use
+          echo "::set-output name=temp-file-path::$TEMP_FILE"
       - name: Create Release Bundle
         id: create_release_bundle
         env:
             SPEC: ${{ steps.release_bundle_build_spec.outputs.SPEC }}
+            TEMP_FILE_PATH: ${{ steps.create-temp-file.outputs.temp-file-path }}
         run: |
+          # Get the temporary file path from the output of the previous step
+          
+        
+          # Display the content of the temporary file
+          cat "$TEMP_FILE_PATH"
           {
             echo 'RELEASE_BUNDLE<<EOF'
-            jf ds release-bundle-create --builds ./spec.json --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
+            jf ds release-bundle-create --builds $TEMP_FILE_PATH --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} Phoenix-Release-Bundle-${{ github.ref_name }} ${{ github.run_number }}
             echo EOF
           } >> $GITHUB_ENV
