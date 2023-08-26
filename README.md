@@ -7,4 +7,4 @@ The automation featured int his repo was originally created from the JFrog CLI w
 jf ci-setup
 ```
 
-## Test Branch Readme Update 7
+## Test Branch Readme Update 8
