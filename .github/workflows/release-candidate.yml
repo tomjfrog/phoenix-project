@@ -57,7 +57,7 @@ jobs:
         run: |
           {
           echo 'QUERY_RESULT<<EOF'
-          curl --request POST \
+          curl -v --request POST \
           --url "$JF_BASE_URL/artifactory/api/search/aql" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header 'Content-Type: text/plain' \
