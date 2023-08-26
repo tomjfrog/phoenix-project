@@ -32,7 +32,7 @@ jobs:
           --repo-resolve-releases phoenix-maven-dev-virtual \
           --repo-resolve-snapshots phoenix-maven-dev-virtual \
           --repo-deploy-releases phoenix-maven-dev-virtual \
-          --repo-deploy-snapshots phoenix-maven-dev-virtual
+          --repo-deploy-snapshots phoenix-maven-dev-virtual"
           
           # Build the project using JFrog CLI
           jf mvn clean install \
