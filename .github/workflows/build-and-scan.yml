@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin'
       - name: Build
         env:
-          JF_INSTANCE_NAME: ${{ env.JF_INSTANCE_NAME }}
+          JF_INSTANCE_NAME: ${{ vars.JF_INSTANCE_NAME }}
         run: |
           # Configure the project
           MVN_PATH=`which mvn` && export M2_HOME=`readlink -f $MVN_PATH | xargs dirname | xargs dirname`
