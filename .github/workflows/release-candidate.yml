@@ -55,7 +55,6 @@ jobs:
           BUILD_NAME: ${{ github.repository }}
           JF_BASE_URL: ${{ vars.JF_BASE_URL }}
         run: |
-          {
           echo 'QUERY_RESULT<<EOF'
           curl --request POST \
           --url $JF_BASE_URL/artifactory/api/search/aql \
@@ -67,8 +66,7 @@ jobs:
           .include(\"name\", \"number\", \"created\")
           .sort({\"\$desc\": [\"created\"]})
           .limit(1)"
-          echo 'EOF'
-          } >> $GITHUB_OUTPUT
+          echo EOF >> $GITHUB_OUTPUT
       # I will need these values in subsequent steps to create an RB from a build
       - name: Store Build Name and Number
         id: store_build_name_and_number
