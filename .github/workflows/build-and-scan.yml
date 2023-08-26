@@ -22,11 +22,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Build
+        env:
+          JF_INSTANCE_NAME: ${{ env.JF_INSTANCE_NAME }}
         run: |
           # Configure the project
           MVN_PATH=`which mvn` && export M2_HOME=`readlink -f $MVN_PATH | xargs dirname | xargs dirname`
-           jf mvn-config \
-          --server-id-resolve jfrog-instance \
+          "jf mvn-config \
+          --server-id-resolve $JF_INSTANCE_NAME \
           --repo-resolve-releases phoenix-maven-dev-virtual \
           --repo-resolve-snapshots phoenix-maven-dev-virtual \
           --repo-deploy-releases phoenix-maven-dev-virtual \
