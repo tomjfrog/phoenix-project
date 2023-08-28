@@ -67,6 +67,7 @@ jobs:
           .include(\"name\", \"number\", \"created\")
           .sort({\"\$desc\": [\"created\"]})
           .limit(1)"
+          echo EOF
           echo 'EOF' 
           } >> $GITHUB_OUTPUT
       # I will need these values in subsequent steps to create an RB from a build
