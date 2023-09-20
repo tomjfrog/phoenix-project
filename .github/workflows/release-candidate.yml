@@ -75,6 +75,7 @@ jobs:
         env:
           QUERY_RESULT: ${{ steps.build_query_result.outputs.QUERY_RESULT }}
         run: |
+          echo "QUERY_RESULT: $QUERY_RESULT"
           echo "BUILD_NAME=$(echo $QUERY_RESULT | jq -r '.results[0]."build.name"')" >> $GITHUB_OUTPUT
           echo "BUILD_NUMBER=$(echo $QUERY_RESULT | jq -r '.results[0]."build.number"')" >> $GITHUB_OUTPUT
           echo "Build Name: $BUILD_NAME"
