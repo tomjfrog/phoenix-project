@@ -63,7 +63,7 @@ jobs:
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header 'Content-Type: text/plain' \
           --data "builds.find({
-              \"name\": \"$BUILD_NAME\"
+              \"name\": \"tomjfrog/phoenix-project\"
            })"
           echo EOF 
           } >> $GITHUB_OUTPUT
