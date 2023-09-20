@@ -56,9 +56,9 @@ jobs:
           JF_BASE_URL: ${{ vars.JF_BASE_URL }}
         run: |
           {
-          echo "BUILD_NAME: $BUILD_NAME"
           echo 'QUERY_RESULT<<EOF'
-          curl --request POST \
+          curl --trace - \
+          --request POST \
           --url "$JF_BASE_URL/artifactory/api/search/aql" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header 'Content-Type: text/plain' \
