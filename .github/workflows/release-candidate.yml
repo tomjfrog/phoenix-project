@@ -78,8 +78,6 @@ jobs:
           echo "QUERY_RESULT: $QUERY_RESULT"
           echo "BUILD_NAME=$(echo $QUERY_RESULT | jq -r '.results[0]."build.name"')" >> $GITHUB_OUTPUT
           echo "BUILD_NUMBER=$(echo $QUERY_RESULT | jq -r '.results[0]."build.number"')" >> $GITHUB_OUTPUT
-          echo "Build Name: $BUILD_NAME"
-          echo "Build Number: $BUILD_NUMBER"
         # This was hard.  Multiline strings in GH Actions is not very easy
       - name: Create Build Spec for Release Bundle
         id: release_bundle_build_spec

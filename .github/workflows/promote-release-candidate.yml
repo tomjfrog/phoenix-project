@@ -1,0 +1,63 @@
+name: Promote Release Candidate on SemVer Tag Push
+
+on:
+  push:
+    tags:
+      - '^v\d+(\.\d+)*$' # Regex pattern to match semantic version strings that begin with a lowercase v followed by any number of digits and dots
+jobs:
+  promote-release-candidate-to-prod:
+    runs-on: ubuntu-latest
+    env:
+      JF_ENV_1: ${{ secrets.JF_ENV_1 }}
+      JFROG_BUILD_STATUS: PASS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
+        with:
+          version: latest
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Tooling Check
+        run: |
+          echo 'curl version:' $(curl --version)
+          echo 'jf version:' $(jf --version)
+      - name: Fetch the latest Release Bundle
+        id: fetch_release_bundle
+        env:
+        run: |
+          {
+          echo 'LATEST_RELEASE_BUNDLE_VERSION<<EOF'
+          curl --request GET \
+          --url "$JF_BASE_URL/lifecycle/api/v2/release_bundle/records/phoenix-project-release-bundle?order_by=created&limit=1' \
+          --header "Authorization: Bearer $JF_ACCESS_TOKEN" | jq -r '.release_bundles[0].release_bundle_version'
+          echo EOF
+          } >> $GITHUB_OUTPUT
+      - name: Promote Release Bundle
+        id: promote_release_bundle
+        env:
+          COMMIT_SHA: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+          BUILD_NAME: ${{ github.repository }}
+          RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
+          JF_BASE_URL: ${{ vars.JF_BASE_URL }}
+        run: |
+          {
+          echo 'PROMOTION_RESULT<<EOF'
+          curl --request POST \
+          --url "$JF_BASE_URL/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION" \
+          --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
+          --header 'Content-Type: application/json' \
+          --header "X-JFrog-Signing-Key-Name: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}" \
+          --data '{
+              "environment": "PROD",
+              "included_repository_keys": [
+                "phoenix-maven-prod-local"
+              ],
+              "overwrite_existing_artifacts": true
+            }' 
+          } >> $GITHUB_OUTPUT
