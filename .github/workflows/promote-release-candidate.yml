@@ -56,11 +56,11 @@ jobs:
           --header 'Content-Type: application/json' \
           --header "X-JFrog-Signing-Key-Name: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}" \
           --data {
-              \"environment\": \"PROD\",
-              \"included_repository_keys\": [
-                \"phoenix-maven-prod-local\"
+              "environment": "PROD",
+              "included_repository_keys": [
+                "phoenix-maven-prod-local"
               ],
-              \"overwrite_existing_artifacts\": true
+              "overwrite_existing_artifacts": true
             }
           echo EOF
           } >> $GITHUB_OUTPUT
