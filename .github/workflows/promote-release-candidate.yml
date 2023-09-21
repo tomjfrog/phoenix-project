@@ -29,6 +29,8 @@ jobs:
       - name: Fetch the latest Release Bundle
         id: fetch_release_bundle
         env:
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+          JF_BASE_URL: ${{ vars.JF_BASE_URL }}
         run: |
           {
           echo 'LATEST_RELEASE_BUNDLE_VERSION<<EOF'
