@@ -35,7 +35,7 @@ jobs:
           {
           echo 'LATEST_RELEASE_BUNDLE_VERSION<<EOF'
           curl --request GET \
-          --url "$JF_BASE_URL/lifecycle/api/v2/release_bundle/records/phoenix-project-release-bundle?order_by=created&limit=1' \
+          --url "$JF_BASE_URL/lifecycle/api/v2/release_bundle/records/phoenix-project-release-bundle?order_by=created&limit=1" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" | jq -r '.release_bundles[0].release_bundle_version'
           echo EOF
           } >> $GITHUB_OUTPUT
