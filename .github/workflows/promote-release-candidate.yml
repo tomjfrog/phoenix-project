@@ -26,6 +26,9 @@ jobs:
         run: |
           echo 'curl version:' $(curl --version)
           echo 'jf version:' $(jf --version)
+      - name: Clear caches
+        run: |
+          gh cache delete --all
       - name: Fetch the latest Release Bundle
         id: fetch_release_bundle
         env:
