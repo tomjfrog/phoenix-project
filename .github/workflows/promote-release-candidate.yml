@@ -49,7 +49,7 @@ jobs:
         run: |
           {
           echo 'PROMOTE_RESULT<<EOF'
-          curl --url "https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle" \ 
+          curl --url https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle \ 
           --request POST \ 
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \ 
           --header 'Content-Type: application/json' \
