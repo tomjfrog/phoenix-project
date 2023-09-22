@@ -51,11 +51,11 @@ jobs:
           {
           echo 'JSON_BODY<<EOF'
             {
-              "environment": "PROD",
-              "included_repository_keys": [
-                "phoenix-maven-prod-local"
+              \"environment\": \"PROD\",
+              \"included_repository_keys\": [
+                \"phoenix-maven-prod-local\"
               ],
-              "overwrite_existing_artifacts": false
+              \"overwrite_existing_artifacts\": false
             }
           echo EOF
           } >> $GITHUB_OUTPUT
