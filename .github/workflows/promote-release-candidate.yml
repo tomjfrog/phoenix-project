@@ -49,12 +49,11 @@ jobs:
         id: promote_release_bundle
         env:
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-#          JF_ACCESS_TOKEN: "some-token"
           JF_BASE_URL: ${{ vars.JF_BASE_URL }}
           RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
           RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
         run: |
-          export JSON_BODY=$(cat <<EOF
+          echo JSON_BODY=$(cat <<EOF
           {
             "environment": "PROD",
             "included_repository_keys": [
@@ -66,7 +65,6 @@ jobs:
           {
           curl --request "POST" \
           --header "Content-Type: application/json" \
-          --header "X-Foo: promote" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header "X-JFrog-Signing-Key-Name: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}" \
           --data $JSON_BODY \
