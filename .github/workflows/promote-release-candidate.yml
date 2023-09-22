@@ -55,7 +55,6 @@ jobs:
           RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
         run: |
           {
-          echo 'PROMOTE_RESULT<<EOF'
           curl "$JF_BASE_URL/lifecycle/api/v2/release_bundle/records/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION" \
           --request POST \
           --header "Content-Type: application/json" \
@@ -70,8 +69,6 @@ jobs:
             ],
             "overwrite_existing_artifacts": true
           }"
-          echo EOF
-          } >> $GITHUB_OUTPUT
       - name: Validate Promotion
         id: validate_promotion
         run: |
