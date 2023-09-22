@@ -62,10 +62,10 @@ jobs:
           --data "{
             "environment": "PROD",
             "included_repository_keys": [
-               "phoenix-maven-prod-local",
-               $RELEASE_BUNDLE_VERSION
-             ],
-             "overwrite_existing_artifacts": true
+              "phoenix-maven-prod-local",
+              "$RELEASE_BUNDLE_VERSION"
+            ],
+            "overwrite_existing_artifacts": true
           }"
           echo EOF
           } >> $GITHUB_OUTPUT
