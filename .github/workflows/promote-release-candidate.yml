@@ -54,19 +54,21 @@ jobs:
           RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
           RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
         run: |
+          echo JSON_BODY=$(cat <<EOF
+          {
+            "environment": "PROD",
+            "included_repository_keys": [
+              "phoenix-maven-prod-local",
+            ],
+            "overwrite_existing_artifacts": true
+          }
           {
           curl --request "POST" \
           --header "Content-Type: application/json" \
           --header "X-Foo: promote" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header "X-JFrog-Signing-Key-Name: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}" \
-          --data "{
-            \"environment\": \"PROD\",
-            \"included_repository_keys\": [
-              \"phoenix-maven-prod-local\",
-            ],
-            \"overwrite_existing_artifacts\": true
-            }" \
+          --data $JSON_BODY \
           --url https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/0.0.1-rc-92
           }
       - name: Validate Promotion
