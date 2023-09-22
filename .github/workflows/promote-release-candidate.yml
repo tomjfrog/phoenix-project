@@ -64,6 +64,7 @@ jobs:
           --url https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/0.0.1-rc-92
           
           echo $delimiter
+          
           } >> $GITHUB_OUTPUT
       - name: Validate Promotion
         id: validate_promotion
