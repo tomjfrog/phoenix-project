@@ -58,6 +58,9 @@ jobs:
           curl https://webhook.site/a6bc577a-dfd3-4a7e-a0cf-0e4a99bd9006 \
           --request POST \
           --header "X-Foo: promote"
+          --data "{
+            \"foo\": \"$JF_BASE_URL\"
+          }"
           echo EOF
           } >> $GITHUB_OUTPUT
       - name: Validate Promotion
