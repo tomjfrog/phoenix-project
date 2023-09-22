@@ -61,6 +61,7 @@ jobs:
           --header "Content-Type: application/json" \
           --header "X-Foo: promote" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
+          --header "X-JFrog-Signing-Key-Name: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}" \
           --data "{
             "environment": "PROD",
             "included_repository_keys": [
