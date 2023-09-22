@@ -50,14 +50,14 @@ jobs:
         run: |
           {
           echo 'JSON_BODY<<EOF'
-            {
+            '{
               \"environment\": \"PROD\",
               \"included_repository_keys\": [
                 \"phoenix-maven-prod-local\"
               ],
               \"overwrite_existing_artifacts\": false
-            }
-          echo EOF
+            }'
+          EOF
           } >> $GITHUB_OUTPUT
       - name: Validate JSON Body
         id: validate_json_body
