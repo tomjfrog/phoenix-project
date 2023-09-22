@@ -3,7 +3,7 @@ name: Promote Release Candidate on SemVer Tag Push
 on:
   push:
     tags:
-      - 'v*' # Regex pattern to match semantic version strings that begin with a lowercase v followed by any number of digits and dots
+      - 'v*' # Regex pattern to match semantic version strings that begin with a lowercase v followed by any number of digits and dots: v1.0.0, v1.0.0-alpha, etc
 jobs:
   promote-release-candidate-to-prod:
     runs-on: ubuntu-latest
@@ -41,12 +41,6 @@ jobs:
           } >> $GITHUB_OUTPUT
       - name: Promote Release Bundle
         id: promote_release_bundle
-        env:
-          COMMIT_SHA: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-          BUILD_NAME: ${{ github.repository }}
-          RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
-          JF_BASE_URL: ${{ vars.JF_BASE_URL }}
         run: |
           {
           echo 'PROMOTION_RESULT<<EOF'
@@ -55,12 +49,12 @@ jobs:
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header 'Content-Type: application/json' \
           --header "X-JFrog-Signing-Key-Name: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}" \
-          --data "{
+          --data '{
               "environment": "PROD",
               "included_repository_keys": [
                 "phoenix-maven-prod-local"
               ],
               "overwrite_existing_artifacts": true
-            }"
+            }'
           echo EOF
           } >> $GITHUB_OUTPUT
