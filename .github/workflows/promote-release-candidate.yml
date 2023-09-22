@@ -61,5 +61,5 @@ jobs:
               \"overwrite_existing_artifacts\": true
           }" \
           --request POST
-          echo EOF
+          echo 'EOF'
           } >> $GITHUB_OUTPUT
