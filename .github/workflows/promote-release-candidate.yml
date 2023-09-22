@@ -57,11 +57,13 @@ jobs:
           echo 'PROMOTE_RESULT<<EOF'
           curl https://webhook.site/a6bc577a-dfd3-4a7e-a0cf-0e4a99bd9006 \
           --request POST \
+          --header "Content-Type: application/json" \
           --header "X-Foo: promote" \
           --data "{
             "environment": "PROD",
             "included_repository_keys": [
-               "phoenix-maven-prod-local"
+               "phoenix-maven-prod-local",
+               $RELEASE_BUNDLE_VERSION
              ],
              "overwrite_existing_artifacts": true
           }"
