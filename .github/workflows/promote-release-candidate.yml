@@ -54,15 +54,14 @@ jobs:
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header 'Content-Type: application/json' \
           --header "X-JFrog-Signing-Key-Name: $RELEASE_BUNDLE_SIGNING_KEY" \
-          --data "{ <<BODY
-            "environment": "PROD",
-            "included_repository_keys": [
-              "phoenix-maven-prod-local"
-            ],
-              "overwrite_existing_artifacts": true
+          --data "{
+            "environment": "PROD", \
+            "included_repository_keys": [ \
+              "phoenix-maven-prod-local" \
+            ], \
+              "overwrite_existing_artifacts": true \
           }"
-          echo 'BODY'
-          echo 'EOF'
+          echo EOF
           } >> $GITHUB_OUTPUT
       - name: Output Promotion Result
         run: |
