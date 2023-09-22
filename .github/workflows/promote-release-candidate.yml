@@ -58,11 +58,11 @@ jobs:
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header "X-JFrog-Signing-Key-Name: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}" \
           --data '{"environment":"PROD","included_repository_keys":["phoenix-maven-prod-local"],"overwrite_existing_artifacts":false}' \
-          --url https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/0.0.1-rc-92) >> $GITHUB_OUTPUT
-          echo $PROMOTE_RESULT >> $GITHUB_OUTPUT
+          --url https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/0.0.1-rc-92)
+          echo $PROMOTE_RESULT >> $GITHUB_ENV
       - name: Validate Promotion
         id: validate_promotion
         env:
-          PROMOTE_RESULT: ${{ steps.promote_release_bundle.outputs.PROMOTE_RESULT }}
+          PROMOTE_RESULT: ${{ env.PROMOTE_RESULT }}
         run: |
           echo "$PROMOTE_RESULT"
