@@ -53,8 +53,8 @@ jobs:
           RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
           RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
         run: |
-          {
           echo 'PROMOTE_RESULT<<EOF'
+          {
           curl --request "POST" \
           --header "Content-Type: application/json" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
