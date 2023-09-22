@@ -56,7 +56,7 @@ jobs:
         run: |
           {
           echo 'PROMOTE_RESULT<<EOF'
-          curl "${JF_BASE_URL}/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/${RELEASE_BUNDLE_VERSION}" \
+          curl "$JF_BASE_URL/lifecycle/api/v2/release_bundle/records/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION" \
           --request POST \
           --header "Content-Type: application/json" \
           --header "X-Foo: promote" \
