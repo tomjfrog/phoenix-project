@@ -56,7 +56,7 @@ jobs:
         run: |
           {
           curl "$JF_BASE_URL/lifecycle/api/v2/release_bundle/records/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION" \
-          --request POST \
+          --request "POST" \
           --header "Content-Type: application/json" \
           --header "X-Foo: promote" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
