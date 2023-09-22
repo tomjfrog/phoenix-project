@@ -27,6 +27,8 @@ jobs:
           echo 'curl version:' $(curl --version)
           echo 'jf version:' $(jf --version)
       - name: Clear caches
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh cache delete --all
       - name: Fetch the latest Release Bundle
