@@ -48,17 +48,15 @@ jobs:
       - name: Set Promote JSON body
         id: set_promote_json_body
         run: |
+          echo JSON_BODY=$(cat <<EOF
           {
-          echo 'JSON_BODY<<EOF'
-            '{
-              \"environment\": \"PROD\",
-              \"included_repository_keys\": [
-                \"phoenix-maven-prod-local\"
-              ],
-              \"overwrite_existing_artifacts\": false
-            }'
-          EOF
-          } >> $GITHUB_OUTPUT
+            "environment": "PROD",
+            "included_repository_keys": [
+              "phoenix-maven-prod-local"
+            ],
+            "overwrite_existing_artifacts": false
+          }
+          EOF) >> $GITHUB_ENV
       - name: Validate JSON Body
         id: validate_json_body
         run: |
@@ -72,6 +70,7 @@ jobs:
           RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
           JSON_BODY: ${{ steps.set_promote_json_body.outputs.JSON_BODY }}
         run: |
+
           {
           curl --request "POST" \
           --header "Content-Type: application/json" \
