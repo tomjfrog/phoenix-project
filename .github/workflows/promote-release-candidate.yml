@@ -49,7 +49,7 @@ jobs:
         id: set_promote_json_body
         run: |
           {
-            echo 'JSON_BODY<<EOF'
+          echo 'JSON_BODY<<EOF'
             {
               "environment": "PROD",
               "included_repository_keys": [
