@@ -60,7 +60,7 @@ jobs:
       - name: Validate JSON Body
         id: validate_json_body
         run: |
-          echo ${{ steps.set_promote_json_body.outputs.JSON_BODY }}
+          echo "${{ steps.set_promote_json_body.outputs.JSON_BODY }}"
       - name: Promote Release Bundle
         id: promote_release_bundle
         env:
