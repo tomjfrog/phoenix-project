@@ -62,4 +62,4 @@ jobs:
       - name: Validate Promotion
         id: validate_promotion
         run: |
-          echo ${{ steps.promote_release_bundle.outputs.PROMOTE_RESULT }}
+          echo "${{ steps.promote_release_bundle.outputs.PROMOTE_RESULT }}"
