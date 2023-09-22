@@ -59,7 +59,11 @@ jobs:
           --request POST \
           --header "X-Foo: promote" \
           --data "{
-            \"foo\": \"$JF_BASE_URL\"
+            "environment": "PROD",
+            "included_repository_keys": [
+               "phoenix-maven-prod-local"
+             ],
+             "overwrite_existing_artifacts": true
           }"
           echo EOF
           } >> $GITHUB_OUTPUT
