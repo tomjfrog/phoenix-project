@@ -41,23 +41,7 @@ jobs:
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" | jq -r '.release_bundles[0].release_bundle_version'
           echo EOF
           } >> $GITHUB_OUTPUT
-      - name: Promote Release Bundle
-        id: promote_release_bundle
-        env:
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-          JF_BASE_URL: ${{ vars.JF_BASE_URL }}
-          RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
-          RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
+      - name: Validate Release Bundle Response
+        id: validate_release_bundle_response
         run: |
-          {
-          echo 'PROMOTE_RESULT<<EOF'
-          curl https://webhook.site/a6bc577a-dfd3-4a7e-a0cf-0e4a99bd9006 \ 
-          --request POST \
-          --header "Authorization: Bearer $JF_ACCESS_TOKEN" \ 
-          --header 'Content-Type: application/json' \
-          --header "X-JFrog-Signing-Key-Name: $RELEASE_BUNDLE_SIGNING_KEY" \
-          echo EOF
-          } >> $GITHUB_OUTPUT
-      - name: Output Promotion Result
-        run: |
-          echo "${{ steps.promote_release_bundle.outputs.PROMOTE_RELEASE_BUNDLE_RESULT }}"
+          echo ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
