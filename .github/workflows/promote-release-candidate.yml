@@ -50,7 +50,7 @@ jobs:
           {
           echo 'PROMOTE_RELEASE_BUNDLE_RESULT<<EOF'
           curl "$JF_BASE_URL/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION" \
-          --request POST
+          --request POST \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header 'Content-Type: application/json' \
           --header "X-JFrog-Signing-Key-Name: $RELEASE_BUNDLE_SIGNING_KEY" \
@@ -61,6 +61,6 @@ jobs:
             ],
               \"overwrite_existing_artifacts\": true
           }"
-          BODY
+          echo 'BODY'
           echo 'EOF'
           } >> $GITHUB_OUTPUT
