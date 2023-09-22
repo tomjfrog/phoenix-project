@@ -67,7 +67,7 @@ jobs:
               $RELEASE_BUNDLE_VERSION
             ],
             "overwrite_existing_artifacts": true
-            }"
+            }" \
           --url https://tomjfrog.jfrog.io/lifecycle/api/v2/release_bundle/records/phoenix-project-release-bundle/0.0.1-rc-92
           }
       - name: Validate Promotion
