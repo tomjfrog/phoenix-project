@@ -52,7 +52,7 @@ jobs:
           {
           echo 'PROMOTE_RESULT<<EOF'
           curl https://webhook.site/a6bc577a-dfd3-4a7e-a0cf-0e4a99bd9006 \ 
-          --request POST \ 
+          --request POST \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \ 
           --header 'Content-Type: application/json' \
           --header "X-JFrog-Signing-Key-Name: $RELEASE_BUNDLE_SIGNING_KEY" \
