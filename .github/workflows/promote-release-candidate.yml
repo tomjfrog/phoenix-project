@@ -45,3 +45,22 @@ jobs:
         id: validate_release_bundle_response
         run: |
           echo ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
+      - name: Promote Release Bundle
+        id: promote_release_bundle
+        env:
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+          JF_BASE_URL: ${{ vars.JF_BASE_URL }}
+          RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
+          RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
+        run: |
+          {
+          echo 'PROMOTE_RESULT<<EOF'
+          curl https://webhook.site/a6bc577a-dfd3-4a7e-a0cf-0e4a99bd9006 \
+          --request POST \
+          --header "X-Foo: promote"
+          echo EOF
+          } >> $GITHUB_OUTPUT
+      - name: Validate Promotion
+        id: validate_promotion
+        run: |
+          echo ${{ steps.promote_release_bundle.outputs.PROMOTE_RESULT }}
