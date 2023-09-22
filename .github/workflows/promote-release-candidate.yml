@@ -49,17 +49,18 @@ jobs:
         run: |
           {
           echo 'PROMOTE_RELEASE_BUNDLE_RESULT<<EOF'
-          curl --url "$JF_BASE_URL/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION" \
+          curl "$JF_BASE_URL/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION" \
+          --request POST
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header 'Content-Type: application/json' \
           --header "X-JFrog-Signing-Key-Name: $RELEASE_BUNDLE_SIGNING_KEY" \
-          --data "{
+          --data "{ <<BODY
             \"environment\": \"PROD\",
             \"included_repository_keys\": [
               \"phoenix-maven-prod-local\"
             ],
               \"overwrite_existing_artifacts\": true
-          }" \
-          --request POST
+          }"
+          BODY
           echo 'EOF'
           } >> $GITHUB_OUTPUT
