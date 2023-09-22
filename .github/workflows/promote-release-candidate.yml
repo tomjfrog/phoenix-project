@@ -2,6 +2,8 @@ name: Promote Release Candidate on SemVer Tag Push
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*' # Regex pattern to match semantic version strings that begin with a lowercase v followed by any number of digits and dots: v1.0.0, v1.0.0-alpha, etc
 jobs:
@@ -26,11 +28,6 @@ jobs:
         run: |
           echo 'curl version:' $(curl --version)
           echo 'jf version:' $(jf --version)
-      - name: Clear caches
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh cache delete --all
       - name: Fetch the latest Release Bundle
         id: fetch_release_bundle
         env:
@@ -54,12 +51,11 @@ jobs:
         run: |
           {
           echo 'PROMOTE_RESULT<<EOF'
-          curl --url https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle \ 
+          curl https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle \ 
           --request POST \ 
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \ 
           --header 'Content-Type: application/json' \
           --header "X-JFrog-Signing-Key-Name: $RELEASE_BUNDLE_SIGNING_KEY" \
-          --data '{ "environment": "PROD","included_repository_keys": ["phoenix-maven-prod-local"],"overwrite_existing_artifacts": true }'
           echo EOF
           } >> $GITHUB_OUTPUT
       - name: Output Promotion Result
