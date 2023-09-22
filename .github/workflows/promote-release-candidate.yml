@@ -45,22 +45,6 @@ jobs:
         id: validate_release_bundle_response
         run: |
           echo ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
-      - name: Set Promote JSON body
-        id: set_promote_json_body
-        run: |
-          echo JSON_BODY=$(cat <<EOF
-          {
-            "environment": "PROD",
-            "included_repository_keys": [
-              "phoenix-maven-prod-local"
-            ],
-            "overwrite_existing_artifacts": false
-          }
-          EOF) >> $GITHUB_ENV
-      - name: Validate JSON Body
-        id: validate_json_body
-        run: |
-          echo "${{ steps.set_promote_json_body.outputs.JSON_BODY }}"
       - name: Promote Release Bundle
         id: promote_release_bundle
         env:
@@ -68,15 +52,13 @@ jobs:
           JF_BASE_URL: ${{ vars.JF_BASE_URL }}
           RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
           RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
-          JSON_BODY: ${{ steps.set_promote_json_body.outputs.JSON_BODY }}
         run: |
-
           {
           curl --request "POST" \
           --header "Content-Type: application/json" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header "X-JFrog-Signing-Key-Name: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}" \
-          --data $JSON_BODY \
+          --data {"environment":"PROD","included_repository_keys":["phoenix-maven-prod-local"],"overwrite_existing_artifacts":false} \
           --url https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/0.0.1-rc-92
           }
       - name: Validate Promotion
