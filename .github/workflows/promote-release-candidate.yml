@@ -47,7 +47,6 @@ jobs:
           RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
           RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
         run: |
-          {
           curl --request POST \
           --url "$JF_BASE_URL/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
@@ -59,5 +58,4 @@ jobs:
                 "phoenix-maven-prod-local"
               ],
               "overwrite_existing_artifacts": true
-            }'
-          } >> $GITHUB_OUTPUT
+            }' >> $GITHUB_OUTPUT
