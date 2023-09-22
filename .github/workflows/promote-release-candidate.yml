@@ -68,7 +68,8 @@ jobs:
               $RELEASE_BUNDLE_VERSION
             ],
             "overwrite_existing_artifacts": true
-          }"
+            }"
+          }
       - name: Validate Promotion
         id: validate_promotion
         run: |
