@@ -58,8 +58,3 @@ jobs:
       - name: Set GITHUB_SHA on Artifacts
         run: |
           jf rt sp --build ${{ github.repository }}/${{ github.run_number }} git_sha=${{ github.sha }}
-#      - name: Scan Build
-#        run: |
-#          # Scan the build-info
-#          jf bs ${{ github.repository }} ${{ github.run_number }}
-#        if: always()

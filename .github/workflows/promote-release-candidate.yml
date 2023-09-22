@@ -59,7 +59,7 @@ jobs:
           --header "X-JFrog-Signing-Key-Name: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}" \
           --data '{"environment":"PROD","included_repository_keys":["phoenix-maven-prod-local"],"overwrite_existing_artifacts":false}' \
           --url https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/0.0.1-rc-92)
-          echo $PROMOTE_RESULT >> $GITHUB_ENV
+          echo PROMOTE_RESULT=$PROMOTE_RESULT >> $GITHUB_ENV
       - name: Validate Promotion
         id: validate_promotion
         env:
