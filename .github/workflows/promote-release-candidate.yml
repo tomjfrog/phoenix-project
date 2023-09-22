@@ -50,7 +50,7 @@ jobs:
           {
           echo 'PROMOTE_RESULT<<EOF'
           curl --request POST \ 
-          --url "https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION" \
+          --url "https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \ 
           --header 'Content-Type: application/json' \
           --header "X-JFrog-Signing-Key-Name: $RELEASE_BUNDLE_SIGNING_KEY" \
