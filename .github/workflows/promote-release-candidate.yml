@@ -58,7 +58,7 @@ jobs:
           {
             "environment": "PROD",
             "included_repository_keys": [
-              "phoenix-maven-prod-local",
+              "phoenix-maven-prod-local"
             ],
             "overwrite_existing_artifacts": true
           }
