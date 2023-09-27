@@ -66,3 +66,36 @@ jobs:
           PROMOTE_RESULT: ${{ env.PROMOTE_RESULT }}
         run: |
           echo "$PROMOTE_RESULT"
+      - name: Distribute Release Bundle to Edge Nodes
+        id: distribute_release_bundle
+        env:
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+          JF_BASE_URL: ${{ vars.JF_BASE_URL }}
+          RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
+        run: |
+          {
+            echo 'DISTRIBUTION_RESULT<<EOF'
+            curl --request POST \
+              --url "$JF_BASE_URL/lifecycle/api/v2/distribution/distribute/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION" \
+              --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
+              --header 'Content-Type: application/json' \
+              --data '{
+            	"dry_run": true,
+            	"auto_create_missing_repositories": "true",
+            	"distribution_rules": [
+            		{
+            			"site_name": "tomjfrogedge1"
+            		},
+            		{
+            			"site_name": "tomjfrogedge2"
+            		}
+            	]
+            }'
+          echo EOF
+          } >> $GITHUB_OUTPUT
+      - name: Validate Distribution
+        id: validate_distribution
+        env:
+          DISTRIBUTE_RESULT: ${{ steps.distribute_release_bundle.outputs.DISTRIBUTION_RESULT }}
+        run: |
+          echo "$DISTRIBUTE_RESULT"
