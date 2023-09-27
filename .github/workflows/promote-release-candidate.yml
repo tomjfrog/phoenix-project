@@ -92,7 +92,5 @@ jobs:
           echo DISTRIBUTION_RESULT=$DISTRIBUTION_RESULT >> $GITHUB_ENV
       - name: Validate Distribution
         id: validate_distribution
-        env:
-          DISTRIBUTE_RESULT: ${{ env.DISTRIBUTION_RESULT }}
         run: |
-          echo "$DISTRIBUTE_RESULT"
+          echo "Distribution Result: " ${{ env.DISTRIBUTION_RESULT }}
