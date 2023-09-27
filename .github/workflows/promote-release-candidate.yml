@@ -93,4 +93,4 @@ jobs:
       - name: Validate Distribution
         id: validate_distribution
         run: |
-          echo "Distribution Result: " ${{ env.DISTRIBUTION_RESULT }}
+          echo "Distribution Result: ${{ env.DISTRIBUTION_RESULT }}"
