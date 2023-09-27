@@ -65,7 +65,7 @@ jobs:
         env:
           PROMOTE_RESULT: ${{ env.PROMOTE_RESULT }}
         run: |
-          echo ${{ env.PROMOTE_RESULT }}
+          echo "Promotion to Prod Result: " ${{ env.PROMOTE_RESULT }}
 #      - name: Distribute Release Bundle to Edge Nodes
 #        id: distribute_release_bundle
 #        env:
