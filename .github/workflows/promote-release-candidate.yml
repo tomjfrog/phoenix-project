@@ -73,7 +73,7 @@ jobs:
           JF_BASE_URL: ${{ vars.JF_BASE_URL }}
           RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
         run: |
-          DISTRIBUTE_RESULT=$(curl --request "POST" \
+          DISTRIBUTION_RESULT=$(curl --request "POST" \
           --url "$JF_BASE_URL/lifecycle/api/v2/distribution/distribute/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header 'Content-Type: application/json' \
