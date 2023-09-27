@@ -65,7 +65,7 @@ jobs:
         env:
           PROMOTE_RESULT: ${{ env.PROMOTE_RESULT }}
         run: |
-          echo "$PROMOTE_RESULT"
+          echo ${{ env.PROMOTE_RESULT }}
       - name: Distribute Release Bundle to Edge Nodes
         id: distribute_release_bundle
         env:
@@ -88,8 +88,7 @@ jobs:
             			"site_name": "tomjfrogedge2"
             		}
             	]
-            }'
-          )
+            }')
           echo DISTRIBUTION_RESULT=$DISTRIBUTION_RESULT >> $GITHUB_ENV
       - name: Validate Distribution
         id: validate_distribution
