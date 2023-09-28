@@ -60,7 +60,7 @@ jobs:
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header 'Content-Type: application/json' \
           --data '{
-            "dry_run": true,
+            "dry_run": false,
             "auto_create_missing_repositories": "true",
             "distribution_rules": [
               {
