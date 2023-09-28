@@ -9,10 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JF_ENV_1: ${{ secrets.JF_ENV_1 }}
+      JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+      JF_BASE_URL: ${{ vars.JF_BASE_URL }}
+      JF_INSTANCE_NAME: ${{ vars.JF_INSTANCE_NAME }}
+      BUILD_NAME: ${{ github.repository }}
       JFROG_BUILD_STATUS: PASS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v3
         with:
@@ -22,10 +26,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Tooling Check
-        run: |
-          echo 'curl version:' $(curl --version)
-          echo 'jf version:' $(jf --version)
       # Just seeing what sort of metadata I can fish for...
       - name: Store Commit ID of Tagged Code
         id: tag_commit_sha
@@ -51,9 +51,6 @@ jobs:
         id: build_query_result
         env:
           COMMIT_SHA: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-          BUILD_NAME: ${{ github.repository }}
-          JF_BASE_URL: ${{ vars.JF_BASE_URL }}
         run: |
           {
           echo 'QUERY_RESULT<<EOF'

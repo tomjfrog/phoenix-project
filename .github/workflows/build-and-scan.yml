@@ -10,10 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JF_ENV_1: ${{ secrets.JF_ENV_1 }}
+      JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+      JF_BASE_URL: ${{ vars.JF_BASE_URL }}
+      JF_INSTANCE_NAME: ${{ vars.JF_INSTANCE_NAME }}
       JFROG_BUILD_STATUS: PASS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v3
       - name: Set up JDK 17
@@ -22,8 +25,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Build
-        env:
-          JF_INSTANCE_NAME: ${{ vars.JF_INSTANCE_NAME }}
         run: |
           # Configure the project
           MVN_PATH=`which mvn` && export M2_HOME=`readlink -f $MVN_PATH | xargs dirname | xargs dirname`
@@ -41,7 +42,6 @@ jobs:
       - name: Audit Dependencies
         run: |
           jf audit --mvn
-
       - name: Failure check
         run: |
           echo "JFROG_BUILD_STATUS=FAIL" >> $GITHUB_ENV
@@ -57,4 +57,4 @@ jobs:
         if: always()
       - name: Set GITHUB_SHA on Artifacts
         run: |
-          jf rt sp --build ${{ github.repository }}/${{ github.run_number }} git_sha=${{ github.sha }}
+          jf rt set-props --build ${{ github.repository }}/${{ github.run_number }} git_sha=${{ github.sha }}
