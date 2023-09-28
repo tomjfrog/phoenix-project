@@ -19,11 +19,6 @@ jobs:
         uses: jfrog/setup-jfrog-cli@v3
         with:
           version: latest
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
       - name: Fetch the latest Release Bundle
         id: fetch_release_bundle
         env:
