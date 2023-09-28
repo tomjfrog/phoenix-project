@@ -12,6 +12,7 @@ jobs:
     env:
       JF_ENV_1: ${{ secrets.JF_ENV_1 }}
       JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+      JF_BASE_URL: ${{ vars.JF_BASE_URL }}
       JFROG_BUILD_STATUS: PASS
     steps:
       - name: Checkout
@@ -22,8 +23,6 @@ jobs:
           version: latest
       - name: Fetch the latest Release Bundle
         id: fetch_release_bundle
-        env:
-          JF_BASE_URL: ${{ vars.JF_BASE_URL }}
         run: |
           {
           echo 'LATEST_RELEASE_BUNDLE_VERSION<<EOF'
@@ -39,8 +38,6 @@ jobs:
       - name: Promote Release Bundle
         id: promote_release_bundle
         env:
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-          JF_BASE_URL: ${{ vars.JF_BASE_URL }}
           RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
           RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
         run: |
@@ -60,8 +57,6 @@ jobs:
       - name: Distribute Release Bundle to Edge Nodes
         id: distribute_release_bundle
         env:
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-          JF_BASE_URL: ${{ vars.JF_BASE_URL }}
           RELEASE_BUNDLE_VERSION: ${{ steps.fetch_release_bundle.outputs.LATEST_RELEASE_BUNDLE_VERSION }}
         run: |
           DISTRIBUTION_RESULT=$(curl --request "POST" \
