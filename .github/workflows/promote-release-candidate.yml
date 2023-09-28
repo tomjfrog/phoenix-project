@@ -60,16 +60,24 @@ jobs:
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
           --header 'Content-Type: application/json' \
           --data '{
-            "dry_run": false,
-            "auto_create_missing_repositories": "true",
-            "distribution_rules": [
-              {
-                "site_name": "tomjfrogedge1"
-              },
-              {
-                "site_name": "tomjfrogedge2"
+              "dry_run": false,
+              "auto_create_missing_repositories": "true",
+              "distribution_rules": [
+                {
+                  "site_name": "tomjfrogedge1"
+                },
+                {
+                  "site_name": "tomjfrogedge2"
+                }
+              ],
+              "modifications": {
+                "mappings": [
+                  {
+                    "input": "phoenix-maven-dev-local",
+                    "output": "phoenix-maven-prod-local"
+                  }
+                ]
               }
-            ]
             }')
           echo DISTRIBUTION_RESULT=$DISTRIBUTION_RESULT >> $GITHUB_OUTPUT
       - name: Validate Distribution
