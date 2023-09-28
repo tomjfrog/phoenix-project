@@ -24,6 +24,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+      - name: Capture Abbreviated Git Commit SHA
+        id: capture_abbreviated_git_commit_sha
+        run: |
+          echo "GIT_COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Build
         run: |
           # Configure the project
@@ -37,8 +41,9 @@ jobs:
           
           # Build the project using JFrog CLI
           jf mvn clean install \
-           --build-name=${{ github.repository }} \
-           --build-number=${{ github.run_number }}
+          -Drevision=${{ env.GIT_COMMIT_SHA }} \
+          --build-name=${{ github.repository }} \
+          --build-number=${{ github.run_number }}
       - name: Audit Dependencies
         run: |
           jf audit --mvn
