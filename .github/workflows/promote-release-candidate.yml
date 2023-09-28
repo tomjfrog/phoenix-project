@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JF_ENV_1: ${{ secrets.JF_ENV_1 }}
+      JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
       JFROG_BUILD_STATUS: PASS
     steps:
       - name: Checkout
@@ -22,7 +23,6 @@ jobs:
       - name: Fetch the latest Release Bundle
         id: fetch_release_bundle
         env:
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
           JF_BASE_URL: ${{ vars.JF_BASE_URL }}
         run: |
           {
