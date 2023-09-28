@@ -24,10 +24,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Tooling Check
-        run: |
-          echo 'curl version:' $(curl --version)
-          echo 'jf version:' $(jf --version)
       - name: Fetch the latest Release Bundle
         id: fetch_release_bundle
         env:
@@ -59,11 +55,11 @@ jobs:
           --header "X-JFrog-Signing-Key-Name: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}" \
           --data '{"environment":"PROD","included_repository_keys":["phoenix-maven-prod-local"],"overwrite_existing_artifacts":false}' \
           --url https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/0.0.1-rc-92)
-          echo PROMOTE_RESULT=$PROMOTE_RESULT >> $GITHUB_ENV
+          echo PROMOTE_RESULT=$PROMOTE_RESULT >> $GITHUB_OUTPUT
       - name: Validate Promotion
         id: validate_promotion
         env:
-          PROMOTE_RESULT: ${{ env.PROMOTE_RESULT }}
+          PROMOTE_RESULT: ${{ steps.promote_release_bundle.outputs.PROMOTE_RESULT }}
         run: |
           echo "Promotion to Prod Result: " ${{ env.PROMOTE_RESULT }}
       - name: Distribute Release Bundle to Edge Nodes
@@ -89,8 +85,8 @@ jobs:
               }
             ]
             }')
-          echo DISTRIBUTION_RESULT=$DISTRIBUTION_RESULT >> $GITHUB_ENV
+          echo DISTRIBUTION_RESULT=$DISTRIBUTION_RESULT >> $GITHUB_OUTPUT
       - name: Validate Distribution
         id: validate_distribution
         run: |
-          echo "Distribution Result: ${{ env.DISTRIBUTION_RESULT }}"
+          echo "Distribution Result: ${{ steps.distribute_release_bundle.outputs.DISTRIBUTION_RESULT }}"
