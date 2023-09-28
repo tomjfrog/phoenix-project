@@ -44,7 +44,7 @@ jobs:
           PROMOTE_RESULT=$(curl --request "POST" \
           --header "Content-Type: application/json" \
           --header "Authorization: Bearer $JF_ACCESS_TOKEN" \
-          --header "X-JFrog-Signing-Key-Name: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}" \
+          --header "X-JFrog-Signing-Key-Name: $RELEASE_BUNDLE_SIGNING_KEY" \
           --data '{"environment":"PROD","included_repository_keys":["phoenix-maven-prod-local"],"overwrite_existing_artifacts":false}' \
           --url "https://tomjfrog.jfrog.io/lifecycle/api/v2/promotion/records/phoenix-project-release-bundle/$RELEASE_BUNDLE_VERSION")
           echo PROMOTE_RESULT=$PROMOTE_RESULT >> $GITHUB_OUTPUT
