@@ -11,6 +11,7 @@ jobs:
       JF_ENV_1: ${{ secrets.JF_ENV_1 }}
       JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
       JF_BASE_URL: ${{ vars.JF_BASE_URL }}
+      JF_PROJECT_KEY: ${{ vars.JF_PROJECT_KEY }}
       RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
       JFROG_BUILD_STATUS: PASS
     steps:

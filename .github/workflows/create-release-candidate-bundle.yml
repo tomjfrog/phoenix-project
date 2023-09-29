@@ -12,7 +12,9 @@ jobs:
       JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
       JF_BASE_URL: ${{ vars.JF_BASE_URL }}
       JF_INSTANCE_NAME: ${{ vars.JF_INSTANCE_NAME }}
+      JF_RELEASE_BUNDLE_NAME: ${{ vars.JF_RELEASE_BUNDLE_NAME }}
       BUILD_NAME: ${{ github.repository }}
+      RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
       JFROG_BUILD_STATUS: PASS
     steps:
       - name: Checkout
@@ -88,11 +90,12 @@ jobs:
                     \"builds\": [
                       {
                         \"name\": \"$BUILD_NAME\",
-                        \"number\": \"$BUILD_NUMBER\"
+                        \"number\": \"$BUILD_NUMBER\",
+                        \"project\": \"$JF_PROJECT_KEY\"
                       }
                     ]
                   }"
-             echo EOF
+            echo EOF
           } >> $GITHUB_OUTPUT
       # RBv2 CLI requires an actual JSON file, not a JSON-formatted string, as a parameter.  Annoying, but ok
       - name: Write to File
@@ -115,11 +118,16 @@ jobs:
             TEMP_FILE_PATH: ${{ steps.create-temp-file.outputs.temp-file-path }}
         run: |
           jf release-bundle-create \
+          --project=$JF_PROJECT_KEY \
           --builds=$TEMP_FILE_PATH \
-          --signing-key=${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} \
+          --signing-key=$RELEASE_BUNDLE_SIGNING_KEY \
           --sync=true \
-          phoenix-project-release-bundle ${{ github.ref_name }}
+          $JF_RELEASE_BUNDLE_NAME ${{ github.ref_name }}
       - name: Promote Release Bundle to QA
         id: promote_release_bundle_to_qa
         run: |
-          jf release-bundle-promote --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} phoenix-project-release-bundle ${{ github.ref_name }} QA
+          jf release-bundle-promote \
+          --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} \
+          --project $JF_PROJECT_KEY \
+          $JF_RELEASE_BUNDLE_NAME ${{ github.ref_name }} \
+          QA
