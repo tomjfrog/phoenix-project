@@ -59,7 +59,7 @@ jobs:
           # Collect and store VCS details in the build-info
           jf rt bag ${{ github.repository }} ${{ github.run_number }}
           # Publish the build-info to Artifactory
-          jf rt bp ${{ github.repository }} ${{ github.run_number }}
+          jf rt bp --project phx ${{ github.repository }} ${{ github.run_number }}
         if: always()
       - name: Set GITHUB_SHA on Artifacts
         run: |
