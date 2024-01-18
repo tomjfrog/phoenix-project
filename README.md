@@ -65,4 +65,4 @@ To build a SemVer release, create a release in Github with the pattern `vx.{x}.{
 promote the latest RBv2 to a Production repository and distribute it to an Edge node. The distribution will also do
 a path mapping to the Edge node, thus copying the artifacts to a sensical path on the Edge node.
 
-1
+2
