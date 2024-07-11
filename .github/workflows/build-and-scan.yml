@@ -64,7 +64,7 @@ jobs:
           jf mvn clean install \
           -Drevision=${{ env.GIT_COMMIT_SHA }} \
           -DskipTests=true
-          --project ${{ vars.JF_PROJECT }} \
+          --project=${{ vars.JF_PROJECT }} \
           --build-name=${{ github.repository }} \
           --build-number=${{ github.run_number }}
 
