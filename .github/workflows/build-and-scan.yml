@@ -63,7 +63,7 @@ jobs:
           # Build the project using JFrog CLI
           jf mvn clean install \
           -Drevision=${{ env.GIT_COMMIT_SHA }} \
-          -DskipTests=true
+          -DskipTests=true \
           --build-name=${{ github.repository }} \
           --build-number=${{ github.run_number }}
 
