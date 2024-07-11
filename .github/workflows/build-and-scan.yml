@@ -61,14 +61,11 @@ jobs:
           --repo-deploy-snapshots $MVNC_REPO_DEPLOY_SNAPSHOTS
           
           # Build the project using JFrog CLI
-          jf mvn \
-          --build-name=${{ github.repository }} \
-          --build-number=${{ github.run_number }}
-          clean \
-          install \
+          jf mvn clean install \
           -Drevision=${{ env.GIT_COMMIT_SHA }} \
           -DskipTests=true
-          
+          --build-name=${{ github.repository }} \
+          --build-number=${{ github.run_number }}
 
       - name: Audit Dependencies
         run: |
