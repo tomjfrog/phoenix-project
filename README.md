@@ -2,10 +2,9 @@
 
 A sample repo to showcase a modern Software Development Lifecycle approach.
 
-This demo showcases RBv2 capabilities in the context of a (project)[https://jfrog.
-com/help/r/jfrog-platform-administration-documentation/introduction-to-projects]
+This demo showcases RBv2 capabilities in the context of a [project](https://jfrog.com/help/r/jfrog-platform-administration-documentation/introduction-to-projects)
 
-There is a different (demo)[https://github.com/tomjfrog/feniks],  `tomjfrog/feniks` that showcases RBv2
+There is a different [demo](https://github.com/tomjfrog/feniks),  `tomjfrog/feniks` that showcases RBv2
 capabilities without a project.
 
 # Initial Setup
@@ -19,18 +18,16 @@ will create a base64 encoded string representing a pre-configured JPD from your 
 
 Add the following as _Repository Secrets_ in the _Settings_ tab of the repository:
 
-* `JF_ACCESS_TOKEN`: An access token that has write permissions to the target repository.
+
 * `RELEASE_BUNDLE_SIGNING_KEY`: The *name* of the GPG Key to use for signing release bundles. This name is created when
   adding a GPG Key to Artifactory via `Platform Security -> Keys Management -> Signing Keys`. NOTE: This is not the
   same as a GPG Key that's added via the REST API for RBv1 Distribution purposes.
-* `JF_ENV_1`: The base64 encoded string that represents the environment variables to be used for the first environment.
-  Created by executing `jf c export <server id>` from the JFrog CLI.
 
 ## Add Github Actions Variables
 
 Add the following as _Repository Variables_ in the _Settings_ tab of the repository:
 
-* JF_BASE_URL
+* JF_BASE_URL: The base 
 * `JF_INSTANCE_NAME` The name of the JFrog instance to use for the environment. This is the name of the server created
   when executing `jf c add <server id>` from the JFrog CLI.
 * `JF_PROJECT_KEY`: This demo features the RBv2 capabilities in the context of a project. This variable should be set to
