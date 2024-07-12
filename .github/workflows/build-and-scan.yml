@@ -85,7 +85,7 @@ jobs:
           jf rt build-add-git ${{ github.repository }} ${{ github.run_number }}
           
           # Publish the build-info to Artifactory
-          jf rt build-publish --project ${{ vars.JF_PROJECT }} ${{ github.repository }} ${{ github.run_number }}
+          jf rt build-publish --project=${{ vars.JF_PROJECT }} ${{ github.repository }} ${{ github.run_number }}
         if: always()
 
       - name: Set GITHUB_SHA on Artifacts
