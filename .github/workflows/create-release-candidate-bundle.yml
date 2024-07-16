@@ -6,12 +6,13 @@ on:
 #  push:
 #    tags:
 #      - '*-rc-[0-9]*' # Regex pattern to match tags suffixed with '-rc-' followed by a number
+permissions:
+  id-token: write
+
 jobs:
   promote-and-create-release-candidate:
     runs-on: ubuntu-latest
     env:
-      JF_ENV_1: ${{ secrets.JF_ENV_1 }}
-      JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
       JF_BASE_URL: ${{ vars.JF_BASE_URL }}
       JF_INSTANCE_NAME: ${{ vars.JF_INSTANCE_NAME }}
       JF_RELEASE_BUNDLE_NAME: ${{ vars.JF_RELEASE_BUNDLE_NAME }}
@@ -32,7 +33,6 @@ jobs:
         with:
           oidc-provider-name: ${{ vars.JF_OIDC_PROVIDER_NAME }}
           oidc-audience: jfrog-github
-          version: latest
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
