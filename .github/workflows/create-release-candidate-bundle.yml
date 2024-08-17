@@ -155,11 +155,12 @@ jobs:
           --signing-key=$RELEASE_BUNDLE_SIGNING_KEY \
           --sync=true \
           $JF_RELEASE_BUNDLE_NAME ${{ github.ref_name }}
-#      - name: Promote Release Bundle to QA
-#        id: promote_release_bundle_to_qa
-#        run: |
-#          jf release-bundle-promote \
-#          --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} \
-#          --project $JF_PROJECT_KEY \
-#          $JF_RELEASE_BUNDLE_NAME ${{ github.ref_name }} \
-#          QA
+
+      - name: Promote Release Bundle to QA
+        id: promote_release_bundle_to_dev
+        run: |
+          jf release-bundle-promote \
+          --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} \
+          --project $JF_PROJECT_KEY \
+          $JF_RELEASE_BUNDLE_NAME ${{ github.ref_name }} \
+          DEV
