@@ -1,11 +1,12 @@
-name: Create Release Bundle and Promote
+name: 'Create Release Bundle and Promote'
 
 on:
   workflow_dispatch:
-
-#  push:
-#    tags:
-#      - '*-rc-[0-9]*' # Regex pattern to match tags suffixed with '-rc-' followed by a number
+  push:
+    tags:
+      - '*-rc-[0-9]*' # Regex pattern to match tags suffixed with '-rc-' followed by a number
+    paths-ignore:
+      - .github/**
 permissions:
   id-token: write
 
@@ -13,6 +14,7 @@ jobs:
   promote-and-create-release-candidate:
     runs-on: ubuntu-latest
     env:
+      OIDC_PROVIDER_NAME: ${{ vars.JF_OIDC_PROVIDER_NAME }}
       JF_BASE_URL: ${{ vars.JF_BASE_URL }}
       JF_INSTANCE_NAME: ${{ vars.JF_INSTANCE_NAME }}
       JF_RELEASE_BUNDLE_NAME: ${{ vars.JF_RELEASE_BUNDLE_NAME }}
