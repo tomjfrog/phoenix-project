@@ -22,6 +22,7 @@ jobs:
       BUILD_NAME: ${{ github.repository }}
       RELEASE_BUNDLE_SIGNING_KEY: ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }}
       JFROG_BUILD_STATUS: PASS
+      JFROG_CLI_AVOID_NEW_VERSION_WARNING: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -79,6 +80,7 @@ jobs:
         id: build_query_result
         env:
           COMMIT_SHA: ${{ steps.tag_commit_sha.outputs.COMMIT_SHA }}
+          JF_ACCESS_TOKEN: ${{ steps.setup-jfrog-cli.outputs.oidc-token }}
         run: |
           {
           echo 'QUERY_RESULT<<EOF'
