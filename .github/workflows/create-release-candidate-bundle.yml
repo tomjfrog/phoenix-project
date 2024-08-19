@@ -71,7 +71,7 @@ jobs:
       - name: Capture Abbreviated Git Commit SHA
         id: capture_abbreviated_git_commit_sha
         run: |
-          echo "GIT_COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Print GITHUB_REF
         run: |
@@ -159,7 +159,7 @@ jobs:
           --builds=$TEMP_FILE_PATH \
           --signing-key=$RELEASE_BUNDLE_SIGNING_KEY \
           --sync=true \
-          $JF_RELEASE_BUNDLE_NAME ${{ env.GIT_COMMIT_SHA }}-${{ github.ref_name }}
+          $JF_RELEASE_BUNDLE_NAME ${{ env.GIT_COMMIT_SHA_SHORT }}-${{ github.ref_name }}
 
       - name: Promote Release Bundle to Dev
         id: promote_release_bundle_to_dev
@@ -167,5 +167,5 @@ jobs:
           jf release-bundle-promote \
           --signing-key ${{ secrets.RELEASE_BUNDLE_SIGNING_KEY }} \
           --project $JF_PROJECT_KEY \
-          $JF_RELEASE_BUNDLE_NAME ${{ github.ref_name }} \
+          $JF_RELEASE_BUNDLE_NAME ${{ env.GIT_COMMIT_SHA_SHORT }}-${{ github.ref_name }} \
           DEV
